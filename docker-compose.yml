@@ -3,11 +3,11 @@ services:
     build: ./backend
     env_file: ./backend/.env
     environment:
-      - DATABASE_URL=sqlite+aiosqlite:///./data/mina_agent.db
+      - DATABASE_URL=sqlite+aiosqlite:////app/data/mina_agent.db
     volumes:
       - db-data:/app/data
-      # Mount Claude auth for CLI access (from host ~/.claude)
-      - ${CLAUDE_AUTH_DIR:-~/.claude}:/root/.claude:ro
+      # Mount Claude auth for CLI access — set CLAUDE_AUTH_DIR in shell or use default
+      - ${CLAUDE_AUTH_DIR:-/home/ohsy/.claude}:/root/.claude:ro
     restart: unless-stopped
 
   frontend:

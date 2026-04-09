@@ -2,9 +2,8 @@ import uuid
 from datetime import datetime
 
 from sqlalchemy import (
-    Column, DateTime, ForeignKey, Integer, String, Text, JSON, Enum, Float, Boolean
+    Column, DateTime, ForeignKey, Integer, String, Text, JSON, Enum, Float, Boolean, Uuid
 )
-from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.sql import func
 
 from app.core.database import Base
@@ -13,10 +12,10 @@ from app.core.database import Base
 class PipelineRun(Base):
     __tablename__ = "pipeline_runs"
 
-    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    config = Column(JSON, default={})
+    id = Column(Uuid, primary_key=True, default=uuid.uuid4)
+    config = Column(JSON, default=dict)
     status = Column(String(20), default="running")  # running | completed | failed
-    steps = Column(JSON, default={})
+    steps = Column(JSON, default=dict)
     error = Column(Text, nullable=True)
     posts_scraped = Column(Integer, default=0)
     contents_generated = Column(Integer, default=0)
@@ -38,18 +37,18 @@ class ScrapedPost(Base):
     url = Column(Text, nullable=True)
     score = Column(Integer, default=0)
     comment_count = Column(Integer, default=0)
-    metadata_ = Column("metadata", JSON, default={})
+    metadata_ = Column("metadata", JSON, default=dict)
     scraped_at = Column(DateTime(timezone=True), server_default=func.now(), index=True)
-    pipeline_id = Column(UUID(as_uuid=True), ForeignKey("pipeline_runs.id"), nullable=True)
+    pipeline_id = Column(Uuid, ForeignKey("pipeline_runs.id"), nullable=True)
 
 
 class TrendAnalysis(Base):
     __tablename__ = "trend_analyses"
 
     id = Column(Integer, primary_key=True, autoincrement=True)
-    pipeline_id = Column(UUID(as_uuid=True), ForeignKey("pipeline_runs.id"), nullable=True)
-    topics = Column(JSON, default=[])
-    opportunities = Column(JSON, default=[])
+    pipeline_id = Column(Uuid, ForeignKey("pipeline_runs.id"), nullable=True)
+    topics = Column(JSON, default=list)
+    opportunities = Column(JSON, default=list)
     sentiment_summary = Column(Text, nullable=True)
     raw_response = Column(Text, nullable=True)
     analyzed_at = Column(DateTime(timezone=True), server_default=func.now())
@@ -59,7 +58,7 @@ class ContentItem(Base):
     __tablename__ = "content_queue"
 
     id = Column(Integer, primary_key=True, autoincrement=True)
-    pipeline_id = Column(UUID(as_uuid=True), ForeignKey("pipeline_runs.id"), nullable=True)
+    pipeline_id = Column(Uuid, ForeignKey("pipeline_runs.id"), nullable=True)
     platform = Column(String(20))  # reddit | itchio
     target = Column(String(100))  # subreddit or board
     content_type = Column(String(50))  # post | comment | devlog
@@ -84,7 +83,7 @@ class PublishedPost(Base):
     external_id = Column(String(100), nullable=True)
     score = Column(Integer, default=0)
     comment_count = Column(Integer, default=0)
-    metrics = Column(JSON, default={})
+    metrics = Column(JSON, default=dict)
     published_at = Column(DateTime(timezone=True), server_default=func.now())
     last_checked_at = Column(DateTime(timezone=True), nullable=True)
 
@@ -111,7 +110,7 @@ class Template(Base):
     platform = Column(String(20))
     content_type = Column(String(50))
     template_text = Column(Text)
-    variables = Column(JSON, default=[])
+    variables = Column(JSON, default=list)
     updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())
 
 
@@ -119,26 +118,26 @@ class ToneGuideline(Base):
     __tablename__ = "tone_guidelines"
 
     id = Column(Integer, primary_key=True, autoincrement=True)
-    use_words = Column(JSON, default=[])
-    avoid_words = Column(JSON, default=[])
-    principles = Column(JSON, default=[])
+    use_words = Column(JSON, default=list)
+    avoid_words = Column(JSON, default=list)
+    principles = Column(JSON, default=list)
     updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())
 
 
 class Promotion(Base):
     __tablename__ = "promotions"
 
-    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    id = Column(Uuid, primary_key=True, default=uuid.uuid4)
     game_title = Column(String(300))
     game_url = Column(Text, nullable=True)
     game_description = Column(Text, nullable=True)
-    target_platforms = Column(JSON, default=["reddit"])
-    target_communities = Column(JSON, default=[])
-    extra_context = Column(JSON, default={})
+    target_platforms = Column(JSON, default=lambda: ["reddit"])
+    target_communities = Column(JSON, default=list)
+    extra_context = Column(JSON, default=dict)
     callback_url = Column(Text, nullable=True)
     status = Column(String(30), default="pending", index=True)  # pending|analyzing|generating|ready|publishing|completed|failed
-    pipeline_id = Column(UUID(as_uuid=True), ForeignKey("pipeline_runs.id"), nullable=True)
-    content_ids = Column(JSON, default=[])
+    pipeline_id = Column(Uuid, ForeignKey("pipeline_runs.id"), nullable=True)
+    content_ids = Column(JSON, default=list)
     result_summary = Column(Text, nullable=True)
     error = Column(Text, nullable=True)
     requested_by = Column(String(100), nullable=True)
@@ -151,7 +150,7 @@ class Webhook(Base):
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     url = Column(Text)
-    events = Column(JSON, default=[])  # content.generated, content.published, promotion.completed, etc.
+    events = Column(JSON, default=list)  # content.generated, content.published, promotion.completed, etc.
     secret = Column(String(200), nullable=True)
     owner = Column(String(100), nullable=True)
     active = Column(Boolean, default=True)

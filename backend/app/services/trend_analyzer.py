@@ -12,18 +12,23 @@ logger = logging.getLogger(__name__)
 
 def _find_claude_cli() -> str:
     """Find the claude CLI binary path."""
-    # Check env var first (set in launch.json)
+    # Check env var first
     env_path = os.environ.get("CLAUDE_CLI_PATH")
     if env_path:
         return env_path
     found = shutil.which("claude")
     if found:
         return found
+    # Docker/Linux: check common paths
+    for p in ["/usr/local/bin/claude", "/usr/bin/claude"]:
+        if os.path.isfile(p):
+            return p
     # Windows npm global fallback
-    for base in [os.environ.get("APPDATA", ""), os.path.expanduser("~\\AppData\\Roaming")]:
-        c = os.path.join(base, "npm", "claude.cmd")
-        if os.path.isfile(c):
-            return c
+    if os.name == "nt":
+        for base in [os.environ.get("APPDATA", ""), os.path.expanduser("~\\AppData\\Roaming")]:
+            c = os.path.join(base, "npm", "claude.cmd")
+            if os.path.isfile(c):
+                return c
     return "claude"
 
 

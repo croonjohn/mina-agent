@@ -32,16 +32,17 @@ _pipeline_results: dict = {}
 async def _run_pipeline_background(
     pipeline_id: str,
     request: PipelineRunRequest,
-    db: AsyncSession,
 ):
-    result = await run_pipeline(
-        db=db,
-        platforms=request.platforms,
-        tiers=request.tiers,
-        content_types=request.content_types,
-        auto_approve=request.auto_approve,
-    )
-    _pipeline_results[pipeline_id] = result
+    from app.core.database import async_session
+    async with async_session() as db:
+        result = await run_pipeline(
+            db=db,
+            platforms=request.platforms,
+            tiers=request.tiers,
+            content_types=request.content_types,
+            auto_approve=request.auto_approve,
+        )
+        _pipeline_results[pipeline_id] = result
 
 
 @router.post("/run", response_model=PipelineResponse)
@@ -50,18 +51,21 @@ async def run_full_pipeline(
     background_tasks: BackgroundTasks,
     db: AsyncSession = Depends(get_db),
 ):
-    """Run the full pipeline: scrape → analyze → generate."""
-    result = await run_pipeline(
-        db=db,
-        platforms=request.platforms,
-        tiers=request.tiers,
-        content_types=request.content_types,
-        auto_approve=request.auto_approve,
-    )
+    """Run the full pipeline in background: scrape → analyze → generate."""
+    from app.models.models import PipelineRun
+    import uuid
+
+    pipeline = PipelineRun(config={"platforms": request.platforms, "tiers": request.tiers}, status="running")
+    db.add(pipeline)
+    await db.commit()
+    await db.refresh(pipeline)
+    pid = str(pipeline.id)
+
+    background_tasks.add_task(_run_pipeline_background, pid, request)
     return PipelineResponse(
-        pipeline_id=result["pipeline_id"],
-        status=result["status"],
-        message=f"Scraped {result.get('posts_scraped', 0)} posts, generated {result.get('contents_generated', 0)} content items.",
+        pipeline_id=pid,
+        status="running",
+        message="Pipeline started in background. Poll /pipeline/status/{id} for progress.",
     )
 
 
