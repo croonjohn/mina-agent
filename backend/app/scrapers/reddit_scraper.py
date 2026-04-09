@@ -1,9 +1,11 @@
-"""Reddit scraper - dual mode: PRAW (if API keys) or HTTP JSON (no keys needed)."""
-import asyncpraw
+"""Reddit scraper - HTTP JSON mode (no API keys needed, read-only)."""
+import asyncio
 import httpx
-from typing import Optional
+import logging
 
 from app.core.config import get_settings
+
+logger = logging.getLogger(__name__)
 
 # Subreddit tiers from Mina Lee's plan
 SUBREDDIT_TIERS = {
@@ -62,99 +64,23 @@ async def scrape_subreddit_http(
     return posts
 
 
-# === PRAW mode (needs API key, required for posting) ===
-
-async def create_reddit_client() -> Optional[asyncpraw.Reddit]:
-    """Create an authenticated Reddit client. Returns None if no credentials."""
-    settings = get_settings()
-    if not settings.reddit_client_id:
-        return None
-
-    return asyncpraw.Reddit(
-        client_id=settings.reddit_client_id,
-        client_secret=settings.reddit_client_secret,
-        username=settings.reddit_username,
-        password=settings.reddit_password,
-        user_agent=settings.reddit_user_agent,
-    )
-
-
-async def scrape_subreddit_praw(
-    reddit: asyncpraw.Reddit,
-    subreddit_name: str,
-    sort: str = "hot",
-    limit: int = 25,
-) -> list[dict]:
-    """Scrape posts using PRAW (authenticated)."""
-    posts = []
-    subreddit = await reddit.subreddit(subreddit_name)
-
-    if sort == "hot":
-        submissions = subreddit.hot(limit=limit)
-    elif sort == "new":
-        submissions = subreddit.new(limit=limit)
-    elif sort == "rising":
-        submissions = subreddit.rising(limit=limit)
-    else:
-        submissions = subreddit.hot(limit=limit)
-
-    async for submission in submissions:
-        if submission.stickied:
-            continue
-
-        posts.append({
-            "platform": "reddit",
-            "source": subreddit_name,
-            "external_id": submission.id,
-            "title": submission.title,
-            "body": submission.selftext[:2000] if submission.selftext else None,
-            "author": str(submission.author) if submission.author else "[deleted]",
-            "url": f"https://reddit.com{submission.permalink}",
-            "score": submission.score,
-            "comment_count": submission.num_comments,
-            "metadata": {
-                "flair": submission.link_flair_text,
-                "created_utc": submission.created_utc,
-                "is_self": submission.is_self,
-                "subreddit": subreddit_name,
-                "upvote_ratio": submission.upvote_ratio,
-            },
-        })
-
-    return posts
-
-
-# === Main entry point - auto-selects mode ===
+# === Main entry point ===
 
 async def scrape_tiers(tiers: list[int], limit_per_sub: int = 25) -> list[dict]:
-    """Scrape subreddits. Uses PRAW if API keys exist, otherwise HTTP JSON."""
-    settings = get_settings()
-    use_praw = bool(settings.reddit_client_id)
-
-    reddit = None
-    if use_praw:
-        reddit = await create_reddit_client()
-        print("[Scraper] Using PRAW (authenticated mode)")
-    else:
-        print("[Scraper] Using HTTP JSON (no API key - read-only mode)")
+    """Scrape subreddits via HTTP JSON (read-only, no API key needed)."""
+    logger.info("[Scraper] Using HTTP JSON mode")
 
     all_posts = []
-    try:
-        for tier in tiers:
-            subreddits = SUBREDDIT_TIERS.get(tier, [])
-            for sub_name in subreddits:
-                try:
-                    if use_praw and reddit:
-                        posts = await scrape_subreddit_praw(reddit, sub_name, limit=limit_per_sub)
-                    else:
-                        posts = await scrape_subreddit_http(sub_name, limit=limit_per_sub)
-                    all_posts.extend(posts)
-                    print(f"[Scraper] r/{sub_name}: {len(posts)} posts")
-                except Exception as e:
-                    print(f"[Scraper] Error scraping r/{sub_name}: {e}")
-                    continue
-    finally:
-        if reddit:
-            await reddit.close()
+    for tier in tiers:
+        subreddits = SUBREDDIT_TIERS.get(tier, [])
+        for sub_name in subreddits:
+            try:
+                posts = await scrape_subreddit_http(sub_name, limit=limit_per_sub)
+                all_posts.extend(posts)
+                logger.info("[Scraper] r/%s: %d posts", sub_name, len(posts))
+                await asyncio.sleep(2)  # rate limit
+            except Exception as e:
+                logger.error("[Scraper] Error scraping r/%s: %s", sub_name, e)
+                continue
 
     return all_posts
