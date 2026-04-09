@@ -24,6 +24,7 @@ app = FastAPI(
     description="Verse8 Community Manager — Reddit/itch.io automation agent",
     version="1.0.0",
     lifespan=lifespan,
+    redirect_slashes=False,
 )
 
 # CORS for admin dashboard
