@@ -6,7 +6,7 @@ const nextConfig: NextConfig = {
     return [
       {
         source: "/api/:path*",
-        destination: "http://34.72.109.18:8000/api/:path*",
+        destination: "https://mina-verse8.duckdns.org/api/:path*",
       },
     ];
   },
