@@ -67,6 +67,7 @@ class ContentItem(Base):
     image_url = Column(Text, nullable=True)
     template_id = Column(String(50), nullable=True)
     trend_context = Column(JSON, nullable=True)
+    source_post_url = Column(Text, nullable=True)
     status = Column(String(20), default="pending", index=True)  # pending|approved|rejected|published
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     approved_at = Column(DateTime(timezone=True), nullable=True)

@@ -7,6 +7,8 @@ import shutil
 import subprocess
 from typing import Optional
 
+from app.services.content_rules import CONTENT_RULES_PROMPT, validate_content
+
 logger = logging.getLogger(__name__)
 
 
@@ -44,6 +46,7 @@ async def analyze_trends_with_claude(posts: list[dict]) -> dict:
             "platform": p["platform"],
             "source": p["source"],
             "title": p["title"],
+            "url": p.get("url", ""),
             "body": (p.get("body") or "")[:300],
             "score": p.get("score", 0),
             "comments": p.get("comment_count", 0),
@@ -106,34 +109,31 @@ async def generate_content_with_claude(
     else:
         avoid_words = "revolutionary, game-changer, disrupt, next-gen, cutting-edge, killer app, synergy, leverage, ecosystem, Web3, blockchain, NFT, metaverse, democratize, unlock, empower, 10x, 100x, no-code, AAA quality, limitless, magic, simply, just, best in class"
 
-    prompt = f"""You are "Mina", the Verse8 community manager. Write a {content_type} for {platform} targeting {target}.
+    prompt = f"""You are "Mina", a regular member of game dev communities who also happens to work at Verse8. Write a {content_type} for {platform} targeting {target}.
 
 ## Tone Rules (MUST follow)
-- Conversational, not corporate. Write like a game dev community member.
-- Humble and genuine. Acknowledge limitations. Never oversell.
-- Helpful first, promotional second. 70%+ of content should provide value.
-- Technically credible. Use correct game dev terminology.
+- Write exactly like a real person on Reddit/itch.io forums. Short paragraphs, casual tone.
+- You're a community member FIRST, not a marketer. Contribute to the discussion genuinely.
+- Humble and honest. If Verse8 isn't the best fit, say so. Suggest alternatives too.
+- Use contractions (don't, can't, it's). Never sound formal.
 
 ## CRITICAL RULES - DO NOT VIOLATE
-- NEVER invent or fabricate game titles, URLs, usernames, or any specific content that does not exist.
-- NEVER link to or reference specific Verse8 games unless the game info is explicitly provided in the trend context below.
-- NEVER make up gameplay descriptions of fictional games.
-- Only reference verse8.io as the platform URL. Do NOT fabricate game-specific URLs like verse8.io/games/xxx.
-- If no specific game is provided in the context, talk about the PLATFORM capabilities only, not specific games.
-- Do NOT write game recommendation or showcase posts unless specific real game data is provided in the context.
+- NEVER invent game titles, URLs, usernames, or content that doesn't exist.
+- NEVER reference specific Verse8 games unless provided in trend context below.
+- NEVER fabricate URLs like verse8.io/games/xxx. Only use verse8.io as the main URL.
+- If no specific game data is given, only talk about the platform in general.
+{CONTENT_RULES_PROMPT}
+## NEVER use these words/phrases: {avoid_words}
 
-## NEVER use these words: {avoid_words}
-
-## Verse8 facts you can reference:
-- AI-native game creation platform
-- HTML5 (Phaser 2D, Three.js 3D), browser instant play
-- 80/20 revenue split (creators 80%)
-- 5,000+ creators, 24,000+ games
+## Verse8 facts (use sparingly, only when relevant):
+- AI game creation platform - describe what you want, AI builds it
+- HTML5 browser games (Phaser 2D, Three.js 3D)
+- Creators keep 80% revenue
 - Free to try at verse8.io
 
-## Trend context: {json.dumps(trend_context, ensure_ascii=False)}
+## Context for this post: {json.dumps(trend_context, ensure_ascii=False)}
 
-## Template reference (adapt, don't copy verbatim): {template}
+## Template reference (adapt freely, don't copy): {template}
 
 ## Output
 Return JSON: {{"title": "...", "body": "...", "content_type": "{content_type}", "platform": "{platform}", "target": "{target}"}}
@@ -142,13 +142,27 @@ For comments, title can be null. Return ONLY valid JSON."""
     result = await _call_claude_code(prompt)
     if result:
         try:
-            return json.loads(result)
+            parsed = json.loads(result)
         except json.JSONDecodeError:
             start = result.find("{")
             end = result.rfind("}") + 1
             if start >= 0 and end > start:
-                return json.loads(result[start:end])
-            return {"body": result, "title": None, "content_type": content_type, "platform": platform, "target": target}
+                parsed = json.loads(result[start:end])
+            else:
+                parsed = {"body": result, "title": None, "content_type": content_type, "platform": platform, "target": target}
+
+        # Post-generation validation & auto-cleaning
+        body = parsed.get("body", "")
+        if body:
+            validation = validate_content(body)
+            parsed["body"] = validation["cleaned"]  # auto-fix em-dashes etc.
+            parsed["content_rules_issues"] = validation["issues"]
+            if not validation["valid"]:
+                logger.warning(
+                    "[Content Rules] Issues found: %s", validation["issues"]
+                )
+
+        return parsed
 
     return {"error": "Claude Code CLI call failed"}
 

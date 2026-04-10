@@ -8,6 +8,7 @@ from typing import Optional
 
 from app.core.database import get_db
 from app.models.models import ContentItem
+from app.services.content_rules import validate_content
 
 router = APIRouter(prefix="/content", tags=["content"])
 
@@ -165,7 +166,39 @@ async def generate_content(request: ContentGenerateRequest, db: AsyncSession = D
     return _serialize_content(item)
 
 
+class ValidateRequest(BaseModel):
+    text: str
+
+
+@router.post("/validate")
+async def validate_content_text(request: ValidateRequest):
+    """Validate content against Content Rules (AI-tell detection, promo density, etc.)."""
+    result = validate_content(request.text)
+    return result
+
+
+@router.post("/{content_id}/validate")
+async def validate_content_item(content_id: int, db: AsyncSession = Depends(get_db)):
+    """Validate a specific content item against Content Rules."""
+    result = await db.execute(select(ContentItem).where(ContentItem.id == content_id))
+    item = result.scalar_one_or_none()
+    if not item:
+        raise HTTPException(status_code=404, detail="Content not found")
+
+    body_result = validate_content(item.body or "")
+    title_result = validate_content(item.title or "") if item.title else {"valid": True, "issues": [], "cleaned": item.title or ""}
+
+    return {
+        "content_id": content_id,
+        "body_validation": body_result,
+        "title_validation": title_result,
+    }
+
+
 def _serialize_content(item: ContentItem) -> dict:
+    # Run quick validation for display
+    body_check = validate_content(item.body or "") if item.body else None
+
     return {
         "id": item.id,
         "pipeline_id": str(item.pipeline_id) if item.pipeline_id else None,
@@ -177,7 +210,12 @@ def _serialize_content(item: ContentItem) -> dict:
         "image_url": item.image_url,
         "template_id": item.template_id,
         "trend_context": item.trend_context,
+        "source_post_url": item.source_post_url,
         "status": item.status,
+        "content_rules": {
+            "valid": body_check["valid"] if body_check else True,
+            "issues": body_check["issues"] if body_check else [],
+        } if body_check else None,
         "created_at": item.created_at.isoformat() if item.created_at else None,
         "approved_at": item.approved_at.isoformat() if item.approved_at else None,
         "published_at": item.published_at.isoformat() if item.published_at else None,

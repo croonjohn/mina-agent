@@ -22,11 +22,17 @@ interface ContentItem {
   body: string;
   status: string;
   created_at: string;
+  source_post_url?: string;
+  content_rules?: {
+    valid: boolean;
+    issues: string[];
+  } | null;
   trend_context?: {
     post_title?: string;
     post_url?: string;
     suggested_angle?: string;
     game_title?: string;
+    board_url?: string;
     [key: string]: any;
   };
 }
@@ -48,10 +54,18 @@ function ContentPageInner() {
   const [expanded, setExpanded] = useState<number | null>(null);
   const [editing, setEditing] = useState<{ id: number; body: string } | null>(null);
   const [loading, setLoading] = useState(true);
+  const [toast, setToast] = useState<string | null>(null);
 
   useEffect(() => {
     load();
   }, [filter]);
+
+  // Auto-dismiss toast
+  useEffect(() => {
+    if (!toast) return;
+    const t = setTimeout(() => setToast(null), 2500);
+    return () => clearTimeout(t);
+  }, [toast]);
 
   async function load() {
     setLoading(true);
@@ -73,8 +87,21 @@ function ContentPageInner() {
   }
 
   async function handlePublish(id: number) {
-    await publishContent(id);
-    load();
+    try {
+      const result = await publishContent(id);
+      // Copy content to clipboard
+      const text = (result.title ? result.title + "\n\n" : "") + (result.body || "");
+      await navigator.clipboard.writeText(text);
+      // Open target URL in new tab
+      if (result.target_url) {
+        window.open(result.target_url, "_blank");
+      }
+      setToast("Copied to clipboard! Paste it on the opened page.");
+      load();
+    } catch {
+      setToast("Publish failed");
+      load();
+    }
   }
 
   async function handleBatchApprove() {
@@ -98,6 +125,16 @@ function ContentPageInner() {
     load();
   }
 
+  async function handleCopyToClipboard(item: ContentItem) {
+    const text = (item.title ? item.title + "\n\n" : "") + item.body;
+    try {
+      await navigator.clipboard.writeText(text);
+      setToast("Copied to clipboard!");
+    } catch {
+      setToast("Failed to copy to clipboard");
+    }
+  }
+
   function toggleSelect(id: number) {
     const next = new Set(selected);
     if (next.has(id)) next.delete(id);
@@ -117,6 +154,13 @@ function ContentPageInner() {
 
   return (
     <div className="space-y-4">
+      {/* Toast notification */}
+      {toast && (
+        <div className="fixed top-4 right-4 z-50 bg-zinc-800 border border-zinc-600 text-white px-4 py-2 rounded-lg shadow-lg text-sm animate-pulse">
+          {toast}
+        </div>
+      )}
+
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold">Content Queue</h1>
         <div className="flex gap-2">
@@ -227,7 +271,7 @@ function ContentPageInner() {
                       onClick={() => handlePublish(item.id)}
                       className="px-2 py-1 text-xs bg-green-600 hover:bg-green-500 text-white rounded"
                     >
-                      Publish
+                      Copy &amp; Open
                     </button>
                   )}
                 </div>
@@ -236,17 +280,40 @@ function ContentPageInner() {
               {/* Expanded Body */}
               {expanded === item.id && (
                 <div className="border-t border-zinc-800 px-4 py-4">
-                  {/* Original post context for comments */}
-                  {item.content_type === "comment" && item.trend_context?.post_title && (
+                  {/* itch.io board URL */}
+                  {item.platform === "itchio" && item.trend_context?.board_url && (
+                    <div className="mb-3">
+                      <span className="text-xs text-zinc-500">Target board: </span>
+                      <a
+                        href={item.trend_context.board_url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-xs text-blue-400 hover:text-blue-300 underline"
+                      >
+                        {item.trend_context.board_url}
+                      </a>
+                    </div>
+                  )}
+                  {/* Source post context for all content types */}
+                  {item.trend_context?.post_title && (
                     <div className="mb-4 bg-zinc-800/50 border border-zinc-700 rounded p-3">
-                      <div className="text-xs text-zinc-500 mb-1">Replying to:</div>
+                      <div className="text-xs text-zinc-500 mb-1">
+                        {item.content_type === "comment"
+                          ? "Replying to:"
+                          : item.content_type === "post"
+                          ? "Inspired by:"
+                          : "Source:"}
+                      </div>
                       <div className="text-sm font-medium">{item.trend_context.post_title}</div>
-                      {item.trend_context.post_url && item.trend_context.post_url !== "N/A" && (
-                        <a href={item.trend_context.post_url} target="_blank" rel="noopener noreferrer"
-                          className="text-xs text-blue-400 hover:text-blue-300 mt-1 inline-block">
-                          {item.trend_context.post_url}
-                        </a>
-                      )}
+                      {(() => {
+                        const url = item.trend_context?.post_url || item.source_post_url;
+                        return url && url !== "N/A" ? (
+                          <a href={url} target="_blank" rel="noopener noreferrer"
+                            className="text-xs text-blue-400 hover:text-blue-300 mt-1 inline-block">
+                            {url}
+                          </a>
+                        ) : null;
+                      })()}
                       {item.trend_context.suggested_angle && (
                         <p className="text-xs text-zinc-400 mt-2">
                           Angle: {item.trend_context.suggested_angle}
@@ -262,6 +329,21 @@ function ContentPageInner() {
                       {item.trend_context.game_url && (
                         <span className="text-xs text-zinc-400">{item.trend_context.game_url}</span>
                       )}
+                    </div>
+                  )}
+                  {/* Content Rules warnings */}
+                  {item.content_rules && !item.content_rules.valid && (
+                    <div className="mb-3 bg-yellow-900/30 border border-yellow-700/50 rounded p-3">
+                      <div className="text-xs font-semibold text-yellow-400 mb-1">
+                        ⚠ Content Rules Issues
+                      </div>
+                      <ul className="text-xs text-yellow-300/80 space-y-0.5">
+                        {item.content_rules.issues
+                          .filter((i: string) => !i.startsWith("Auto-replaced"))
+                          .map((issue: string, idx: number) => (
+                            <li key={idx}>• {issue}</li>
+                          ))}
+                      </ul>
                     </div>
                   )}
                   {editing?.id === item.id ? (
@@ -294,17 +376,27 @@ function ContentPageInner() {
                       <pre className="whitespace-pre-wrap text-sm text-zinc-300 leading-relaxed font-sans">
                         {item.body}
                       </pre>
-                      {(item.status === "pending" ||
-                        item.status === "approved") && (
-                        <button
-                          onClick={() =>
-                            setEditing({ id: item.id, body: item.body })
-                          }
-                          className="mt-3 text-xs text-zinc-500 hover:text-zinc-300"
-                        >
-                          Edit
-                        </button>
-                      )}
+                      <div className="flex gap-3 mt-3">
+                        {(item.status === "pending" ||
+                          item.status === "approved") && (
+                          <button
+                            onClick={() =>
+                              setEditing({ id: item.id, body: item.body })
+                            }
+                            className="text-xs text-zinc-500 hover:text-zinc-300"
+                          >
+                            Edit
+                          </button>
+                        )}
+                        {item.platform === "itchio" && (
+                          <button
+                            onClick={() => handleCopyToClipboard(item)}
+                            className="text-xs text-zinc-500 hover:text-zinc-300"
+                          >
+                            Copy to Clipboard
+                          </button>
+                        )}
+                      </div>
                     </>
                   )}
                 </div>

@@ -1,8 +1,15 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { getPipelineHistory, getPipelineStatus, runPipeline } from "@/lib/api";
 import StatusBadge from "@/components/status-badge";
+
+interface PipelineStep {
+  status: string;
+  count?: number;
+  topics?: number;
+  opportunities?: number;
+}
 
 export default function PipelinePage() {
   const [history, setHistory] = useState<any[]>([]);
@@ -10,6 +17,11 @@ export default function PipelinePage() {
   const [detail, setDetail] = useState<any>(null);
   const [running, setRunning] = useState(false);
   const [message, setMessage] = useState("");
+
+  // Live progress polling
+  const [activePipelineId, setActivePipelineId] = useState<string | null>(null);
+  const [liveStatus, setLiveStatus] = useState<any>(null);
+  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   // Config
   const [platforms, setPlatforms] = useState(["reddit", "itchio"]);
@@ -19,6 +31,45 @@ export default function PipelinePage() {
   useEffect(() => {
     load();
   }, []);
+
+  // Polling effect for live pipeline progress
+  useEffect(() => {
+    if (!activePipelineId) return;
+
+    const poll = async () => {
+      try {
+        const status = await getPipelineStatus(activePipelineId);
+        setLiveStatus(status);
+        if (status.status === "completed" || status.status === "failed") {
+          // Stop polling
+          if (intervalRef.current) {
+            clearInterval(intervalRef.current);
+            intervalRef.current = null;
+          }
+          setRunning(false);
+          if (status.status === "completed") {
+            setMessage(`Pipeline completed: ${status.posts_scraped} scraped, ${status.contents_generated} generated`);
+          } else {
+            setMessage(`Pipeline failed: ${status.error || "Unknown error"}`);
+          }
+          load();
+        }
+      } catch {
+        // Continue polling on transient errors
+      }
+    };
+
+    // Poll immediately, then every 3 seconds
+    poll();
+    intervalRef.current = setInterval(poll, 3000);
+
+    return () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+        intervalRef.current = null;
+      }
+    };
+  }, [activePipelineId]);
 
   async function load() {
     try {
@@ -32,6 +83,7 @@ export default function PipelinePage() {
   async function handleRun() {
     setRunning(true);
     setMessage("");
+    setLiveStatus(null);
     try {
       const result = await runPipeline({
         platforms,
@@ -39,10 +91,15 @@ export default function PipelinePage() {
         auto_approve: autoApprove,
       });
       setMessage(result.message);
-      load();
+      // Start polling with the returned pipeline_id
+      if (result.pipeline_id) {
+        setActivePipelineId(result.pipeline_id);
+      } else {
+        setRunning(false);
+        load();
+      }
     } catch (e: any) {
       setMessage(`Error: ${e.message}`);
-    } finally {
       setRunning(false);
     }
   }
@@ -71,6 +128,40 @@ export default function PipelinePage() {
       prev.includes(p) ? prev.filter((x) => x !== p) : [...prev, p]
     );
   }
+
+  function renderStepIcon(step: PipelineStep | undefined) {
+    if (!step) return <span className="text-zinc-600">--</span>;
+    if (step.status === "completed") {
+      return <span className="text-green-400 text-lg">&#10003;</span>;
+    }
+    if (step.status === "running") {
+      return (
+        <span className="inline-block w-4 h-4 border-2 border-blue-400 border-t-transparent rounded-full animate-spin" />
+      );
+    }
+    if (step.status === "failed") {
+      return <span className="text-red-400 text-lg">&#10007;</span>;
+    }
+    return <span className="text-zinc-600 text-lg">&#9711;</span>;
+  }
+
+  function renderStepLabel(name: string, step: PipelineStep | undefined) {
+    if (!step) return null;
+    if (name === "scrape" && step.count !== undefined) {
+      return <span className="text-xs text-zinc-400">{step.count} posts scraped</span>;
+    }
+    if (name === "analyze") {
+      if (step.topics !== undefined) {
+        return <span className="text-xs text-zinc-400">{step.topics} topics found</span>;
+      }
+    }
+    if (name === "generate" && step.count !== undefined) {
+      return <span className="text-xs text-zinc-400">{step.count} contents generated</span>;
+    }
+    return null;
+  }
+
+  const pipelineStepNames = ["scrape", "analyze", "generate"];
 
   return (
     <div className="space-y-6">
@@ -137,11 +228,62 @@ export default function PipelinePage() {
           {running ? "Running..." : "Run Pipeline"}
         </button>
         {message && (
-          <div className="text-sm text-zinc-400 bg-zinc-800 rounded px-3 py-2">
+          <div
+            className={`text-sm rounded px-3 py-2 ${
+              message.startsWith("Error") || message.includes("failed")
+                ? "text-red-300 bg-red-900/30 border border-red-800"
+                : "text-zinc-400 bg-zinc-800"
+            }`}
+          >
             {message}
           </div>
         )}
       </div>
+
+      {/* Live Progress */}
+      {liveStatus && activePipelineId && (
+        <div className="bg-zinc-900 border border-zinc-800 rounded-lg p-5">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="font-semibold">Live Progress</h2>
+            <StatusBadge status={liveStatus.status} />
+          </div>
+          {liveStatus.error && (
+            <div className="text-sm text-red-400 bg-red-900/20 border border-red-800 rounded px-3 py-2 mb-4">
+              {liveStatus.error}
+            </div>
+          )}
+          <div className="flex items-start gap-0">
+            {pipelineStepNames.map((name, idx) => {
+              const step = liveStatus.steps?.[name] as PipelineStep | undefined;
+              return (
+                <div key={name} className="flex items-center">
+                  <div className="flex flex-col items-center gap-1 min-w-[140px]">
+                    <div className="flex items-center justify-center w-10 h-10 rounded-full border-2 border-zinc-700 bg-zinc-800">
+                      {renderStepIcon(step)}
+                    </div>
+                    <span className="text-sm font-medium capitalize">{name}</span>
+                    {renderStepLabel(name, step)}
+                  </div>
+                  {idx < pipelineStepNames.length - 1 && (
+                    <div className="w-12 h-0.5 bg-zinc-700 mt-5 -mx-2" />
+                  )}
+                </div>
+              );
+            })}
+          </div>
+          {/* Summary counts */}
+          <div className="flex gap-6 mt-4 pt-4 border-t border-zinc-800">
+            <div className="text-sm">
+              <span className="text-zinc-500">Scraped: </span>
+              <span className="text-white font-medium">{liveStatus.posts_scraped ?? 0}</span>
+            </div>
+            <div className="text-sm">
+              <span className="text-zinc-500">Generated: </span>
+              <span className="text-white font-medium">{liveStatus.contents_generated ?? 0}</span>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* History */}
       <div>

@@ -25,24 +25,20 @@ class PipelineResponse(BaseModel):
     message: str = ""
 
 
-# In-memory store for background pipeline results
-_pipeline_results: dict = {}
-
-
-async def _run_pipeline_background(
-    pipeline_id: str,
-    request: PipelineRunRequest,
-):
+async def _run_pipeline_background(request: PipelineRunRequest):
+    """Run the pipeline in background using its own DB session.
+    All progress is committed to PipelineRun.steps in the DB —
+    no in-memory state needed. Frontend polls /pipeline/status/{id}.
+    """
     from app.core.database import async_session
     async with async_session() as db:
-        result = await run_pipeline(
+        await run_pipeline(
             db=db,
             platforms=request.platforms,
             tiers=request.tiers,
             content_types=request.content_types,
             auto_approve=request.auto_approve,
         )
-        _pipeline_results[pipeline_id] = result
 
 
 @router.post("/run", response_model=PipelineResponse)
@@ -51,9 +47,8 @@ async def run_full_pipeline(
     background_tasks: BackgroundTasks,
     db: AsyncSession = Depends(get_db),
 ):
-    """Run the full pipeline in background: scrape → analyze → generate."""
+    """Run the full pipeline in background: scrape -> analyze -> generate."""
     from app.models.models import PipelineRun
-    import uuid
 
     pipeline = PipelineRun(config={"platforms": request.platforms, "tiers": request.tiers}, status="running")
     db.add(pipeline)
@@ -61,7 +56,7 @@ async def run_full_pipeline(
     await db.refresh(pipeline)
     pid = str(pipeline.id)
 
-    background_tasks.add_task(_run_pipeline_background, pid, request)
+    background_tasks.add_task(_run_pipeline_background, request)
     return PipelineResponse(
         pipeline_id=pid,
         status="running",
@@ -79,7 +74,6 @@ async def run_scrape_only(
     from app.scrapers.itchio_scraper import scrape_all_itchio
     from app.models.models import ScrapedPost, PipelineRun
     from datetime import datetime, timezone
-    import uuid
 
     pipeline = PipelineRun(config={"mode": "scrape-only"}, status="running")
     db.add(pipeline)
@@ -113,7 +107,7 @@ async def run_scrape_only(
 
 @router.get("/status/{pipeline_id}")
 async def get_pipeline_status(pipeline_id: str, db: AsyncSession = Depends(get_db)):
-    """Get pipeline run status."""
+    """Get pipeline run status. Frontend polls this every 3 seconds for live progress."""
     from uuid import UUID
     result = await db.execute(
         select(PipelineRun).where(PipelineRun.id == UUID(pipeline_id))

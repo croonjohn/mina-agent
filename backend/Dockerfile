@@ -22,6 +22,9 @@ WORKDIR /app
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
+# Playwright browser for itch.io posting
+RUN playwright install chromium && playwright install-deps chromium
+
 # App code
 COPY . .
 

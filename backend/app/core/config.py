@@ -23,6 +23,10 @@ class Settings(BaseSettings):
     reddit_password: str = ""
     reddit_user_agent: str = "mina-agent:v1.0 (by /u/verse8_official)"
 
+    # itch.io
+    itchio_username: str = ""
+    itchio_password: str = ""
+
     # Discord
     discord_webhook_url: str = ""
 

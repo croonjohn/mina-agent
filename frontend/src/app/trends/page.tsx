@@ -16,6 +16,7 @@ interface Opportunity {
   source: string;
   opportunity_type: string;
   suggested_angle: string;
+  post_url?: string;
 }
 
 export default function TrendsPage() {
@@ -108,8 +109,11 @@ export default function TrendsPage() {
           {opportunities.map((o, i) => (
             <div key={i} className="bg-zinc-900 border border-zinc-800 rounded-lg p-4">
               <div className="flex items-center gap-2 mb-2">
+                <span className="text-xs font-semibold bg-zinc-800 border border-zinc-700 px-2 py-0.5 rounded text-zinc-300">
+                  {o.source}
+                </span>
                 <span className="text-xs font-mono text-zinc-500">
-                  {o.platform}/{o.source}
+                  {o.platform}
                 </span>
                 <span className="text-xs bg-zinc-800 px-2 py-0.5 rounded text-zinc-400">
                   {o.opportunity_type}
@@ -117,6 +121,16 @@ export default function TrendsPage() {
               </div>
               <div className="font-medium text-sm">{o.post_title}</div>
               <p className="text-sm text-zinc-400 mt-2">{o.suggested_angle}</p>
+              {o.post_url && o.post_url !== "N/A" && (
+                <a
+                  href={o.post_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-xs text-blue-400 hover:text-blue-300 mt-2 inline-block"
+                >
+                  View original post ↗
+                </a>
+              )}
             </div>
           ))}
           {opportunities.length === 0 && (
