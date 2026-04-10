@@ -6,7 +6,7 @@ const nextConfig: NextConfig = {
     return [
       {
         source: "/api/:path*",
-        destination: "https://mina-verse8.duckdns.org/api/:path*",
+        destination: "https://pam-venice-recommend-transportation.trycloudflare.com/api/:path*",
       },
     ];
   },
