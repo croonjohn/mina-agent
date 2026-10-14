@@ -1,1 +1,142 @@
 ﻿key,screens,type,ko,en,ja,zh-Hant,zh-Hans,notes
+s01.headline,01,headline,차원이 다른,Another dimension,次元が違う,突破次元的,突破次元的,아래 큰 DITTI 로고와 이어 읽힘. '차원' = 2차원 캐릭터 말장난을 살림 (ja 次元が違う / zh 突破次元)
+ui.btn.create,01,ui,+ 만들기,+ Create,+ 作成,+ 建立,+ 创建,
+ui.see_all,01;02,ui,전체보기 >,See all >,すべて見る >,查看全部 >,查看全部 >,
+ui.sec.top_1on1,01,ui,인기 1:1 캐릭터챗,Top 1:1 Character Chats,人気の1:1キャラチャット,熱門 1:1 角色聊天,热门 1:1 角色聊天,용어: 캐릭터챗 = Character Chat / キャラチャット / 角色聊天
+c.name.sunwoojin,01,ui,선우진,Sunwoo Jin,ソヌ・ジン,鮮于真,鲜于真,캐릭터명. 콘텐츠명 — 앱에 현지화된 이름이 있으면 그걸로 교체
+c.tag.sunwoojin,01,ui,#VELOS 메인보컬 & 센터,#VELOS Main Vocal & Center,#VELOS メインボーカル＆センター,#VELOS 主唱 & 中心位,#VELOS 主唱 & C位,
+c.name.harry,01,ui,해리,Harry,ハリー,哈利,哈利,캐릭터명. 콘텐츠명 — 앱에 현지화된 이름이 있으면 그걸로 교체
+c.tag.harry,01;02,cut,#잊혀진 아이돌 멤버,#Forgotten Idol Member,#忘れられたアイドルメンバー,#被遺忘的偶像成員,#被遗忘的偶像成员,"원본에서 폰 가장자리에 잘려 일부만 보임 (01: 앞부분, 02: '…돌 멤버' 끝부분)"
+ui.sec.top_group,01,ui,인기 다인 캐릭터챗,Top Group Character Chats,人気のグループキャラチャット,熱門多人角色聊天,热门多人角色聊天,다인 = Group / グループ / 多人
+w.ashen.art,01,art,잿빛도시 남자들,Men of the Ashen City,灰色の街の男たち,灰色之城的男人們,灰色之城的男人们,작품 표지 속 붓글씨 제목. 콘텐츠명 — 앱에 현지화된 이름이 있으면 그걸로 교체
+w.ashen.title,01;02,cut,잿빛도시 남자들,Men of the Ashen City,灰色の街の男たち,灰色之城的男人們,灰色之城的男人们,"원본에서 폰 가장자리에 잘려 일부만 보임 (01: '잿빛도시 남…', 02: '…시 남자들')"
+w.ashen.desc,01;02,cut,무법의 잿빛 항구도시 경도의 치명적인 남자들과 지독하게 얽히다.,"Get hopelessly entangled with the deadly men of Gyeongdo, a lawless gray port city.",無法の灰色の港町キョンドで、危険な男たちと深く絡み合う。,與無法之地・灰色港都景島的致命男人們糾纏不清。,与无法之地·灰色港都景岛的致命男人们纠缠不清。,"원본에서 폰 가장자리에 잘려 일부만 보임 (01: 앞부분, 02: 뒷부분). 경도 = 가상 도시명 — ja는 京都(교토)와 헷갈리지 않게 카타카나, zh는 景島 가칭"
+s02.headline,02,headline,"인터렉티브
+캐릭터챗
+NO.1","Interactive
+Character Chat
+NO.1","インタラクティブ
+キャラチャット
+NO.1","互動式
+角色聊天
+NO.1","互动式
+角色聊天
+NO.1","1·2줄 분홍, 3줄 NO.1 흰색 크게 — 그대로"
+c.name.yoontaeo,02,cut,윤태오,Yoon Taeo,ユン・テオ,尹泰午,尹泰午,원본에서 폰 가장자리에 잘려 일부만 보임. 캐릭터명. 콘텐츠명 — 앱에 현지화된 이름이 있으면 그걸로 교체
+c.tag.yoontaeo,02,cut,#회사 대표,#Company CEO,#会社の社長,#公司老闆,#公司老板,원본에서 폰 가장자리에 잘려 일부만 보임 — '#회사 대'까지만 보여 '대표'는 추정
+w.love.title,02,cut,사랑,Love,愛,愛,爱,원본에서 폰 가장자리에 잘려 일부만 보임 — 첫 글자 '사'만 보여 추정
+w.love.desc,02,cut,나를,Me…,私を…,我…,我…,원본에서 폰 가장자리에 잘려 일부만 보임 — '나를'까지만 보여 추정
+ui.tab.home,02,ui,추천,For You,おすすめ,推薦,推荐,하단 탭
+ui.tab.chat,02,ui,캐릭터챗,Characters,キャラチャット,角色聊天,角色聊天,하단 탭 — en은 탭 폭 때문에 짧게
+ui.tab.history,02,ui,채팅 목록,Chats,チャット一覧,聊天列表,聊天列表,하단 탭
+ui.tab.create,02,ui,만들기,Create,作成,建立,创建,하단 탭
+ui.tab.my,02,ui,마이,Profile,マイページ,我的,我的,하단 탭
+ui.hdr.chat,03,ui,캐릭터챗,Character Chat,キャラチャット,角色聊天,角色聊天,화면 제목
+ui.toggle.group,03,ui,다인,Group,グループ,多人,多人,1:1 | 다인 토글 (1:1은 그대로)
+ui.chip.popular,03,ui,인기,Popular,人気,熱門,热门,장르 칩
+ui.chip.new,03,ui,최신,New,新着,最新,最新,장르 칩
+ui.chip.romfan,03,ui,로판,Romantasy,ロマファン,浪漫奇幻,浪漫奇幻,장르 칩 — 로맨스판타지
+ui.chip.modern,03,ui,현대/일상,Modern/Daily,現代/日常,現代/日常,现代/日常,장르 칩
+ui.chip.school,03,ui,학원,School,学園,校園,校园,장르 칩
+ui.chip.noir,03,cut,느와르,Noir,ノワール,黑道,黑道,원본에서 폰 가장자리에 잘려 일부만 보임 — '느와'까지 보임
+w.lhigh.art,03,art,"엘고등학교
+방송부의
+유일한
+여학생이
+되었습니다!","I Became
+the Only Girl
+in L High's
+Broadcasting
+Club!","エル高校
+放送部の
+唯一の
+女子生徒に
+なりました！","我成了
+L高中
+廣播社
+唯一的
+女生！","我成了
+L高中
+广播社
+唯一的
+女生！",작품 표지 속 장식 글씨 (ON AIR는 그대로). 콘텐츠명 — 앱에 현지화된 이름이 있으면 그걸로 교체
+w.lhigh.title,03,ui,엘고등학교 방송부의 유일한 여학생이 되었습니다!,I Became the Only Girl in L High's Broadcasting Club!,エル高校放送部の唯一の女子生徒になりました！,我成了L高中廣播社唯一的女生！,我成了L高中广播社唯一的女生！,콘텐츠명 — 앱에 현지화된 이름이 있으면 그걸로 교체
+w.lhigh.desc,03,ui,"100년 전통 금녀의 구역, 엘고 방송부의 유일한 여자 부원을 앞두고 있다.","A boys-only zone for 100 years, L High's broadcasting club is about to get its one and only female member.",100年続く女人禁制の聖域、エル高放送部に唯一の女子部員がやってくる。,百年傳統的女生禁地——L高廣播社即將迎來唯一的女社員。,百年传统的女生禁地——L高广播社即将迎来唯一的女社员。,작품 소개
+w.subtract.art,03,art,"뺄셈을
+못하는
+남자(들)","The Guy(s)
+Who Can't
+Subtract","引き算が
+できない
+男（たち）","不會
+減法的
+男人（們）","不会
+减法的
+男人（们）","작품 표지 속 굵은 글씨 (DORM 7, EROSIA UNIVERSITY, SUBTRACTION IS HARD 등 영문은 그대로). 콘텐츠명 — 앱에 현지화된 이름이 있으면 그걸로 교체"
+w.subtract.title,03,ui,뺄셈을 못하는 남자(들),The Guy(s) Who Can't Subtract,引き算ができない男（たち）,不會減法的男人（們）,不会减法的男人（们）,콘텐츠명 — 앱에 현지화된 이름이 있으면 그걸로 교체
+s03.headline,03,headline,"비밀스럽게 **1:1**
+여러명과 함께 **다인**","Keep it private with **1:1**
+Bring in more with **Group**","ひそかに **1:1**
+みんなで **グループ**","私密的 **1:1**
+熱鬧的 **多人**","私密的 **1:1**
+热闹的 **多人**",** = 굵게
+s04.art.top,04,art,"틀렸으니까 벌받을게요.
+냐옹..","I got it wrong, so I'll take my punishment.
+Meow..","間違えたから、罰を受けます。
+にゃん..","答錯了，我甘願受罰。
+喵..","答错了，我甘愿受罚。
+喵..",위 일러스트 속 분홍 손글씨
+s04.headline,04,headline,"다양한 세계관,
+흥미진진 스토리","Diverse worlds,
+thrilling stories","多彩な世界観、
+ドキドキのストーリー","多元世界觀，
+精彩刺激的故事","多元世界观，
+精彩刺激的故事",오른쪽 정렬
+s04.art.bottom,04,art,"들어가게 해줘.
+주머니속에.","Let me in.
+Into your pocket.","入れてくれよ。
+ポケットの中に。","讓我進去。
+你的口袋裡。","让我进去。
+你的口袋里。","아래 일러스트 속 파란 네온 손글씨 (1줄 크게, 2줄 작게)"
+s05.headline,05,headline,"내가 정하는
+**맞춤형** 캐릭터 성격","You decide:
+**Custom** character personalities","あなたが決める
+**オーダーメイド**のキャラ性格","由我決定的
+**客製化**角色個性","由我决定的
+**定制化**角色性格",** = 분홍 굵게
+ui.skip,05,ui,건너뛰기,Skip,スキップ,略過,跳过,
+ui.q.type,05,ui,어떤 상대가 좋아요?,What's your type?,どんな相手が好き？,你喜歡什麼樣的對象？,你喜欢什么样的对象？,
+ui.q.pick,05,ui,끌리는 성격을 하나만 골라 주세요.,Pick the one personality you're drawn to.,惹かれる性格を1つだけ選んでください。,請選一個你最心動的個性。,请选一个你最心动的性格。,
+ui.p.sweet,05,ui,다정하고 순정적인,Sweet & Devoted,優しくて一途,溫柔又專情,温柔又专情,성격 카드 제목
+ui.p.sweet.sub,05,ui,한결같이 아껴 주는 사람,Always cherishes you,変わらず大切にしてくれる人,始終如一珍惜你的人,始终如一珍惜你的人,
+ui.p.obsess,05,ui,집착과 질투,Obsessive & Jealous,執着と嫉妬,佔有欲與嫉妒,占有欲与嫉妒,성격 카드 제목 (선택된 카드)
+ui.p.obsess.sub,05,ui,나만 바라보는 뜨거운 사람,Burning eyes only for you,私だけを見つめる情熱的な人,眼裡只有我的熾熱之人,眼里只有我的炽热之人,
+ui.p.tsun,05,ui,까칠한 츤데레,Prickly Tsundere,クールなツンデレ,嘴硬傲嬌,嘴硬傲娇,성격 카드 제목
+ui.p.tsun.sub,05,ui,무뚝뚝한데 자꾸 챙겨 주는 사람,"Blunt, but always looks out for you",ぶっきらぼうなのに世話を焼いてくれる人,冷淡卻總是默默照顧你的人,冷淡却总是默默照顾你的人,
+ui.p.tease,05,ui,능글맞은 여유,Smooth & Teasing,余裕たっぷりの色男,從容又撩人,从容又撩人,성격 카드 제목
+ui.p.tease.sub,05,ui,장난스럽게 밀고 당기는 사람,Plays a teasing push and pull,いたずらっぽく駆け引きする人,愛玩欲擒故縱的人,爱玩欲擒故纵的人,
+s06.headline,06,headline,"나만의 **스토리**
+나만의 작품","Your own **story**
+Your own creation","自分だけの**ストーリー**
+自分だけの作品","專屬我的**故事**
+專屬我的作品","专属我的**故事**
+专属我的作品",** = 굵게
+ui.tab.works,06,ui,작품,Works,作品,作品,作品,상단 탭 (선택됨)
+ui.tab.worlds,06,ui,세계관,Worlds,世界観,世界觀,世界观,상단 탭
+ui.tab.lore,06,ui,로어북,Lorebook,ロアブック,設定集,设定集,상단 탭
+ui.tab.widget,06,ui,위젯,Widgets,ウィジェット,小工具,小组件,상단 탭 — 대만 iOS 小工具 / 본토 iOS 小组件
+ui.my_works,06,ui,내 작품,My Works,マイ作品,我的作品,我的作品,
+ui.my_works.desc,06,ui,만든 작품을 모아 봐요. 비공개 작품은 나에게만 보여요.,All your creations in one place. Private works are visible only to you.,作った作品をまとめて見られます。非公開の作品は自分にだけ表示されます。,集中查看你創作的作品。不公開的作品只有你看得到。,集中查看你创作的作品。私密作品仅自己可见。,
+ui.btn.new_work,06,ui,+ 새 작품 만들기,+ New Work,+ 新しい作品を作成,+ 建立新作品,+ 创建新作品,
+ui.badge.private,06,badge,비공개,Private,非公開,不公開,私密,
+ui.badge.public,06,badge,공개,Public,公開,公開,公开,
+w.baek.title,06,ui,남사친 백시현,Guy Friend Baek Sihyun,男友達ペク・シヒョン,男閨蜜白時賢,男闺蜜白时贤,캐릭터명 포함. 콘텐츠명 — 앱에 현지화된 이름이 있으면 그걸로 교체
+w.puma.art,06,art,"우리 사장님은
+퓨마수인?!","My Boss Is a
+Puma Beastman?!","うちの社長は
+ピューマ獣人？！","我們老闆是
+美洲獅獸人？！","我们老板是
+美洲狮兽人？！",작품 표지 속 굵은 글씨. 콘텐츠명 — 앱에 현지화된 이름이 있으면 그걸로 교체
+w.puma.title,06,ui,우리 사장님은 퓨마수인 ?!,My Boss Is a Puma Beastman?!,うちの社長はピューマ獣人？！,我們老闆是美洲獅獸人？！,我们老板是美洲狮兽人？！,콘텐츠명 — 앱에 현지화된 이름이 있으면 그걸로 교체
+ui.edit,06,ui,편집,Edit,編集,編輯,编辑,
+ui.delete,06,ui,삭제,Delete,削除,刪除,删除,

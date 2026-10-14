@@ -4,7 +4,7 @@
 usage: python3 -I scripts/inventory.py <원본폴더> [-o inventory.csv]
 
 - group  : 화면 비율(세로/가로)이 같은 파일끼리 묶은 그룹. 같은 그룹은 한 장만 생성해 크기만 맞춘다.
-- screen : 파일명 앞 숫자로 추정한 화면 번호(01, 02 ...). 틀리면 CSV에서 직접 고친다.
+- screen : 파일명 마지막 숫자로 추정한 화면 번호(01, 02 ...). 틀리면 CSV에서 직접 고친다.
 - master : (screen, group)마다 가장 큰 파일 하나에 Y. 이미지 생성은 master만 한다.
 """
 import argparse
@@ -46,8 +46,9 @@ def play_issues(w, h, has_alpha, size_mb):
 
 
 def guess_screen(stem):
-    m = re.search(r"\d+", stem)
-    return f"{int(m.group()):02d}" if m else ""
+    # 마지막 숫자를 쓴다: "DITTI 스크린샷_6.5인치_01" → 01
+    nums = re.findall(r"\d+", stem)
+    return f"{int(nums[-1]):02d}" if nums else ""
 
 
 def main():

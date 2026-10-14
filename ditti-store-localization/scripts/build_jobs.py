@@ -23,9 +23,17 @@ Produce the SAME image localized into {lang_name}.
 Replace EVERY piece of Korean text - the marketing headline and description AND all text inside the app UI on the phone screen - with the exact strings listed below.
 Keep everything else identical to ref.png: canvas size {w}x{h} ({orientation}), layout, positions, colors, background, illustrations, photos, icons, phone frame, status bar, and spacing. Match the original font weight, size hierarchy and alignment.
 Do NOT redesign the UI, do NOT add, remove or move any element, do NOT draw a second screen or card on top, and do NOT leave any Korean (Hangul) characters anywhere.
+Keep any text that is not Korean exactly as it is (the DITTI logo, numbers, the status bar, English words).
+Words wrapped in ** are emphasized in the original (bolder and/or colored) - give the translated ** words the same emphasis, and never draw the asterisks.
 If a translated line is longer than the Korean, reduce its font size slightly or wrap it inside the same area - never overflow or overlap other elements.
 Text replacements, in reading order (Korean -> {lang_name}):
 {pairs}"""
+
+# strings.csv의 type별로 프롬프트 줄 끝에 붙는 지시
+TYPE_HINT = {
+    "cut": " [only partly visible in ref.png because the phone edge cuts it off - keep it cut off at the same place]",
+    "art": " [lettering drawn inside the illustration - re-letter it in the same hand-drawn style, color and glow]",
+}
 
 
 def job_id(screen, group):
@@ -69,7 +77,8 @@ def main():
                 if msg not in missing:
                     missing.append(msg)
                 continue
-            pairs = "\n".join(f'{i}. "{s["ko"]}" -> "{s[lang]}"' for i, s in enumerate(rows, 1))
+            pairs = "\n".join(f'{i}. "{s["ko"]}" -> "{s[lang]}"{TYPE_HINT.get(s["type"], "")}'
+                              for i, s in enumerate(rows, 1))
             jobs.append({
                 "job_id": job_id(m["screen"], m["group"]),
                 "lang": lang,
