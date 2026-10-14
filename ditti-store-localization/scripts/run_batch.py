@@ -6,7 +6,7 @@ usage: python3 -I scripts/run_batch.py [jobs.jsonl] [--parallel 3] [--only ja] [
 작업마다 output/work/<lang>/<job_id>/ 에 ref.png, out.png, codex.log, status 를 남긴다.
 "GPT 이미지 생성 사용법" 문서의 필수 네 조각을 여기서 항상 붙인다:
   -m gpt-5.6-terra / stdin 닫기(< /dev/null) / "Save the result as out.png ..." / (mac) node@22 PATH
-status=OK 이면서 out.png가 있으면 다시 돌리지 않는다(재실행 = 실패분만 재시도).
+status=OK, out.png 있음, 프롬프트 동일이면 건너뛴다(재실행 = 실패분·번역 바뀐 것만 다시).
 """
 import argparse
 import json
@@ -27,15 +27,17 @@ MAC_NODE22 = "/opt/homebrew/opt/node@22/bin"  # mac에서 기본 node@20이 깨�
 def run_one(job, workdir, codex, model, use_stdin, timeout):
     d = workdir / job["lang"] / job["job_id"]
     d.mkdir(parents=True, exist_ok=True)
-    status, out = d / "status", d / "out.png"
-    if status.exists() and status.read_text().strip() == "OK" and out.exists():
+    status, out, saved = d / "status", d / "out.png", d / "prompt.txt"
+    prompt = "$imagegen " + job["prompt"] + SUFFIX
+    # strings.csv를 고쳐 프롬프트가 바뀌었으면 OK여도 다시 만든다
+    if (status.exists() and status.read_text().strip() == "OK" and out.exists()
+            and saved.exists() and saved.read_text(encoding="utf-8") == prompt):
         return job, "SKIP", 0.0
 
     with Image.open(job["src"]) as im:  # 레퍼런스는 항상 ref.png 이름으로 같은 폴더에
         im.convert("RGB").save(d / "ref.png")
     out.unlink(missing_ok=True)
-
-    prompt = "$imagegen " + job["prompt"] + SUFFIX
+    saved.write_text(prompt, encoding="utf-8")
     cmd = [codex, "exec", "-m", model, "--skip-git-repo-check",
            "--dangerously-bypass-approvals-and-sandbox"]
     env = dict(os.environ)
