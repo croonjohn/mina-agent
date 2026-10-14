@@ -71,6 +71,10 @@ def main():
             if not gen.exists():
                 problems.append(f"{lang}/{r['rel_path']}: 생성본 없음 ({gen})")
                 continue
+            status = gen.parent / "status"
+            if status.exists() and status.read_text().strip() != "OK":  # 검수 탈락(QA_FAIL)·실패분은 내보내지 않는다
+                problems.append(f"{lang}/{r['rel_path']}: 상태 {status.read_text().strip()} — 재생성 후 다시 실행")
+                continue
             w, h = int(r["width"]), int(r["height"])
             with Image.open(gen) as g:
                 im = flatten(g)
