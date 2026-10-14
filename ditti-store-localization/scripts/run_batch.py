@@ -7,6 +7,7 @@ usage: python3 -I scripts/run_batch.py [jobs.jsonl] [--parallel 3] [--only ja] [
 "GPT 이미지 생성 사용법" 문서의 필수 네 조각을 여기서 항상 붙인다:
   -m gpt-5.6-terra / stdin 닫기(< /dev/null) / "Save the result as out.png ..." / (mac) node@22 PATH
 status=OK, out.png 있음, 프롬프트 동일이면 건너뛴다(재실행 = 실패분·번역 바뀐 것만 다시).
+검수에서 떨어진 작업은 그 폴더에 hint.txt(추가 수정 지시)를 두면 다음 실행 때 프롬프트에 붙어 다시 생성된다.
 """
 import argparse
 import json
@@ -28,7 +29,9 @@ def run_one(job, workdir, codex, model, use_stdin, timeout):
     d = workdir / job["lang"] / job["job_id"]
     d.mkdir(parents=True, exist_ok=True)
     status, out, saved = d / "status", d / "out.png", d / "prompt.txt"
-    prompt = "$imagegen " + job["prompt"] + SUFFIX
+    hint = d / "hint.txt"  # 검수에서 떨어진 작업에 덧붙일 수정 지시 (있을 때만)
+    extra = "\n" + hint.read_text(encoding="utf-8").strip() if hint.exists() else ""
+    prompt = "$imagegen " + job["prompt"] + extra + SUFFIX
     # strings.csv를 고쳐 프롬프트가 바뀌었으면 OK여도 다시 만든다
     if (status.exists() and status.read_text().strip() == "OK" and out.exists()
             and saved.exists() and saved.read_text(encoding="utf-8") == prompt):
