@@ -89,7 +89,9 @@ python3 -I scripts/build_jobs.py input/
 python3 -I scripts/run_batch.py --limit 1
 python3 -I scripts/run_batch.py --parallel 3      # 다시 돌리면 실패분만 재시도
 
-# 5) 검수 — 비교 이미지를 Claude가 읽어 strings.csv와 대조, 틀린 작업만 --only로 재생성
+# 5) 검수 — 비교 이미지를 Claude가 읽어 strings.csv와 대조.
+#    탈락한 작업은 output/work/<lang>/<job>/ 에 hint.txt(무엇을 고칠지)를 쓰고 status를 QA_FAIL로 바꾼 뒤
+#    run_batch.py를 다시 돌리면 그 작업만 수정 지시를 붙여 재생성된다. fit_size.py는 OK인 것만 내보낸다.
 python3 -I scripts/contact_sheet.py
 
 # 6) 최종 크기 맞추기 → output/final/<lang>/
@@ -124,3 +126,5 @@ UTF-8(BOM)로 저장되어 엑셀에서 그대로 열린다. 행 순서 = 프롬
 - `$imagegen`은 원본 픽셀 크기를 그대로 내지 않을 수 있다. 비율 차이가 3%를 넘으면 `fit_size.py`가 멈추고 보고한다
   (`--mode pad` 여백 / `--mode cover` 잘라내기 중 선택, 또는 재생성).
 - 작은 UI 글자는 틀리거나 뭉개질 수 있다 → 5단계 검수를 건너뛰지 않는다.
+  2026-10-14 실행: 48장 중 40장 1차 통과, 6장 2차, 4장 3차에서 통과 (기록: `qa_log.tsv`).
+  자주 틀린 곳 — 화면 02 하단 탭 라벨이 한 칸씩 밀림, 폰 가장자리에 잘린 작은 글자가 깨지거나 빠짐, 장르 칩 중복.
