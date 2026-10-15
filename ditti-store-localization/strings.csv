@@ -1,0 +1,142 @@
+﻿key,screens,type,ko,en,ja,zh-Hant,zh-Hans,notes
+s01.headline,01,headline,차원이 다른,Another dimension,次元が違う,突破次元的,突破次元的,아래 큰 DITTI 로고와 이어 읽힘. '차원' = 2차원 캐릭터 말장난을 살림 (ja 次元が違う / zh 突破次元)
+ui.btn.create,01,ui,+ 만들기,+ Create,+ 作成,+ 創作,+ 创作,[앱 UI 문구] gnb.create 앞에 '+ ' — zh-Hant·zh-Hans 수정 (원래 + 建立 / + 创建)
+ui.see_all,01;02,ui,전체보기 >,View all >,すべて見る >,查看全部 >,查看全部 >,[앱 UI 문구] home.viewAll — en 수정 (원래 See all >). '>'는 앱에서 화살표 아이콘
+ui.sec.top_1on1,01,ui,인기 1:1 캐릭터챗,Popular 1:1 Chats,人気1:1キャラチャット,人氣1:1角色聊天,人气1:1角色聊天,[앱 UI 문구] home.popularCharacters — 전 언어 수정 (원래 Top 1:1 Character Chats / 人気の1:1キャラチャット / 熱門 1:1 角色聊天 / 热门 1:1 角色聊天)
+c.name.sunwoojin,01,ui,선우진,Seon Woo-jin,ソン・ウジン,孫佑鎮,孙佑镇,캐릭터명. [앱 DB 번역] 앱 현지화 이름 — 전 언어 수정 (원래 Sunwoo Jin / ソヌ・ジン / 鮮于真 / 鲜于真). ⚠ zh의 孫은 '손'이라 오역 의심 — DB 번역을 고치면 이 칸도 맞출 것 (원작엔 '선우진' 전체 이름만 있어 선+우진 / 선우+진 경계는 미확정)
+c.tag.sunwoojin,01,ui,#VELOS 메인보컬 & 센터,#VELOS Main Vocalist & Center,#VELOSのメインボーカル＆センター,#VELOS 主唱兼中心成員,#VELOS 主唱兼中心成员,[앱 DB 번역] 캐릭터 역할 라벨('#'+라벨로 표시) — 전 언어 수정 (원래 #VELOS Main Vocal & Center / #VELOS メインボーカル＆センター / #VELOS 主唱 & 中心位 / #VELOS 主唱 & C位)
+c.name.harry,01,ui,해리,Haeri,ヘリ,海利,海利,캐릭터명 '해리'. [앱 DB 번역] 앱 현지화 이름 — 전 언어 수정 (원래 Harry / ハリー / 哈利 / 哈利). 원작엔 영문 표기가 없어 Haeri는 번역 단계의 선택 — Harry로 쓰려면 DB 번역도 함께 수정
+c.tag.harry,01;02,cut,#잊혀진 아이돌 멤버,#A forgotten idol group member,#忘れられたアイドルグループの元メンバー,#被遺忘的偶像團體成員,#被遗忘的偶像组合成员,"원본에서 폰 가장자리에 잘려 일부만 보임 (01: 앞부분, 02: '…돌 멤버' 끝부분). [앱 DB 번역] 캐릭터 역할 라벨 — 전 언어 수정 (원래 #Forgotten Idol Member / #忘れられたアイドルメンバー / #被遺忘的偶像成員 / #被遗忘的偶像成员)"
+ui.sec.top_group,01,ui,인기 다인 캐릭터챗,Popular Group Chats,人気グループチャット,人氣多人角色聊天,人气多人角色聊天,[앱 UI 문구] home.multicastWorks — 전 언어 수정 (원래 Top Group Character Chats / 人気のグループキャラチャット / 熱門多人角色聊天 / 热门多人角色聊天)
+w.ashen.art,01,art,잿빛도시 남자들,Men of the Gray City,灰色の街の男たち,灰色都市的男人們,灰色都市的男人们,작품 표지 속 붓글씨 제목. [앱 DB 번역] 작품명으로 교체. ※ 실제 앱은 표지 이미지를 현지화하지 않음(전 언어 한국어 표지) — 번역할지 원본 유지할지는 선택
+w.ashen.title,01;02,cut,잿빛도시 남자들,Men of the Gray City,灰色の街の男たち,灰色都市的男人們,灰色都市的男人们,"원본에서 폰 가장자리에 잘려 일부만 보임 (01: '잿빛도시 남…', 02: '…시 남자들'). [앱 DB 번역] 작품명"
+w.ashen.desc,01;02,cut,무법의 잿빛 항구도시 겸도의 치명적인 남자들과 지독하게 얽히다.,"Become hopelessly entangled with the dangerous men of Gyeomdo, a lawless gray port city.",無法の灰色の港町キョムドで、危険な男たちと抜き差しならないほど深く関わる。,在無法無天的灰色港口城市兼島，與危險迷人的男人們糾纏至深。,在无法无天的灰色港口城市兼岛，与危险迷人的男人们纠缠至深。,"원본에서 폰 가장자리에 잘려 일부만 보임 (01: 앞부분, 02: 뒷부분). [앱 DB 번역] 작품 소개. 도시명은 '겸도'(원본 스크린샷·DB 확인 — 종전 CSV의 '경도'는 오기) = Gyeomdo / キョムド / 兼島 / 兼岛"
+s02.headline,02,headline,"인터렉티브
+캐릭터챗
+NO.1","Interactive
+Character Chat
+NO.1","インタラクティブ
+キャラチャット
+NO.1","互動式
+角色聊天
+NO.1","互动式
+角色聊天
+NO.1","1·2줄 분홍, 3줄 NO.1 흰색 크게 — 그대로"
+c.name.yoontaeo,02,cut,윤태오,Yoon Tae-o,ユン・テオ,尹泰吾,尹泰吾,원본에서 폰 가장자리에 잘려 일부만 보임. 캐릭터명. [앱 DB 번역] 앱 현지화 이름 — en·zh-Hant·zh-Hans 수정 (원래 Yoon Taeo / 尹泰午 / 尹泰午)
+c.tag.yoontaeo,02,cut,#회사 대표,#Company CEO,#会社の代表,#公司代表,#公司代表,원본에서 폰 가장자리에 잘려 '#회사 대'까지만 보임 — DB 역할 라벨 '회사 대표'로 확인. [앱 DB 번역] ja·zh-Hant·zh-Hans 수정 (원래 #会社の社長 / #公司老闆 / #公司老板)
+w.love.title,02,cut,사랑해주세요.,Please Love Me.,愛してください。,請愛我。,请爱我。,원본에서 폰 가장자리에 잘려 첫 글자 '사'만 보임 — 작품 '사랑해주세요.'로 확인(같은 카드 소개문 '나를…'도 일치). [앱 DB 번역] 전체 제목 기재 — 폰 가장자리에서 잘리게 배치
+w.love.desc,02,cut,나를 싫어하는 4형제에게 과연 사랑 받을 수 있을까?,Can I ever be loved by four brothers who dislike me?,自分を嫌う四兄弟から、愛される日は来るのだろうか？,厭惡我的四兄弟，終有一天會愛上我嗎？,厌恶我的四兄弟，终有一天会爱上我吗？,원본에서 폰 가장자리에 잘려 '나를'까지만 보임. [앱 DB 번역] 전체 소개문 기재 — 폰 가장자리에서 잘리게 배치
+ui.tab.home,02,ui,추천,For You,おすすめ,推薦,推荐,하단 탭
+ui.tab.chat,02,ui,캐릭터챗,Chats,キャラチャット,角色聊天,角色聊天,하단 탭. [앱 UI 문구] gnb.chats — en 수정 (원래 Characters)
+ui.tab.history,02,ui,채팅 목록,Chat List,チャット一覧,聊天清單,聊天列表,하단 탭. [앱 UI 문구] gnb.episodes — en·zh-Hant 수정 (원래 Chats / 聊天列表)
+ui.tab.create,02,ui,만들기,Create,作成,創作,创作,하단 탭. [앱 UI 문구] gnb.create — zh-Hant·zh-Hans 수정 (원래 建立 / 创建)
+ui.tab.my,02,ui,마이,My,マイ,我的,我的,하단 탭. [앱 UI 문구] gnb.my — en·ja 수정 (원래 Profile / マイページ)
+ui.hdr.chat,03,ui,캐릭터챗,Chats,キャラチャット,角色聊天,角色聊天,화면 제목. [앱 UI 문구] gnb.chats — en 수정 (원래 Character Chat)
+ui.toggle.group,03,ui,다인,Group,グループ,多人,多人,1:1 | 다인 토글 (1:1은 그대로)
+ui.chip.popular,03,ui,인기,Popular,人気,人氣,人气,장르 칩. [앱 UI 문구] work.tabs.popular — zh-Hant·zh-Hans 수정 (원래 熱門 / 热门)
+ui.chip.new,03,ui,최신,New,新着,最新,最新,장르 칩
+ui.chip.romfan,03,ui,로판,Romance Fantasy,ロマンスファンタジー,浪漫奇幻,浪漫奇幻,장르 칩 — 로맨스판타지. [앱 UI 문구] work.tabs.romanceFantasy — en·ja 수정 (원래 Romantasy / ロマファン)
+ui.chip.modern,03,ui,현대/일상,Modern,現代/日常,現代/日常,现代/日常,장르 칩. [앱 UI 문구] work.tabs.modern — en 수정 (원래 Modern/Daily)
+ui.chip.school,03,ui,학원,School,学園,校園,校园,장르 칩
+ui.chip.noir,03,cut,느와르,Noir,ノワール,黑色犯罪,黑色犯罪,원본에서 폰 가장자리에 잘려 일부만 보임 — '느와'까지 보임. [앱 UI 문구] work.tabs.noir — zh-Hant·zh-Hans 수정 (원래 黑道 / 黑道)
+w.lhigh.art,03,art,"엘고등학교
+방송부의
+유일한
+여학생이
+되었습니다!","I Became
+the Only Girl
+in the El High School
+Broadcast
+Club!","エル高等学校
+放送部の
+たった一人の
+女子部員に
+なりました！","成為
+艾爾高中
+廣播部
+唯一的
+女生！","成为
+艾尔高中
+广播部
+唯一的
+女生！","작품 표지 속 장식 글씨 (ON AIR는 그대로). [앱 DB 번역] 작품명으로 교체, 줄바꿈은 제안이라 조정 가능. ※ 실제 앱은 표지 이미지를 현지화하지 않음"
+w.lhigh.title,03,ui,엘고등학교 방송부의 유일한 여학생이 되었습니다!,I Became the Only Girl in the El High School Broadcast Club!,エル高等学校放送部のたった一人の女子部員になりました！,成為艾爾高中廣播部唯一的女生！,成为艾尔高中广播部唯一的女生！,[앱 DB 번역] 작품명 (학교명 en은 'El High' — 'L High' 아님)
+w.lhigh.desc,03,ui,"100년 전통 금녀의 구역, 엘고 방송부의 유일한 여자 부원을 앞두고 있다.",A boys-only domain with a century of tradition: El High’s broadcast club is about to welcome its only female member.,100年続く女子禁制の場所、エル高等学校放送部に初の女子部員が加わろうとしている。,百年來不收女生的艾爾高廣播部，正迎來唯一的女部員候選人。,百年来不收女生的艾尔高广播部，正迎来唯一的女部员候选人。,작품 소개. [앱 DB 번역]
+w.subtract.art,03,art,"뺄셈을
+못하는
+남자(들)","The Man (Men)
+Who Cannot
+Subtract","引き算の
+できない
+男（たち）","不會做
+減法的
+男人（們）","不会做
+减法的
+男人（们）","작품 표지 속 굵은 글씨 (DORM 7, EROSIA UNIVERSITY, SUBTRACTION IS HARD 등 영문은 그대로). [앱 DB 번역] 작품명으로 교체, 줄바꿈은 제안이라 조정 가능. ※ 실제 앱은 표지 이미지를 현지화하지 않음"
+w.subtract.title,03,ui,뺄셈을 못하는 남자(들),The Man (Men) Who Cannot Subtract,引き算のできない男（たち）,不會做減法的男人（們）,不会做减法的男人（们）,[앱 DB 번역] 작품명
+s03.headline,03,headline,"비밀스럽게 **1:1**
+여러명과 함께 **다인**","Keep it private with **1:1**
+Bring in more with **Group**","ひそかに **1:1**
+みんなで **グループ**","私密的 **1:1**
+熱鬧的 **多人**","私密的 **1:1**
+热闹的 **多人**",** = 굵게
+s04.art.top,04,art,"틀렸으니까 벌받을게요.
+냐옹..","I got it wrong, so I'll take my punishment.
+Meow..","間違えたから、罰を受けます。
+にゃん..","答錯了，我甘願受罰。
+喵..","答错了，我甘愿受罚。
+喵..",위 일러스트 속 분홍 손글씨
+s04.headline,04,headline,"다양한 세계관,
+흥미진진 스토리","Diverse worlds,
+thrilling stories","多彩な世界観、
+ドキドキのストーリー","多元世界觀，
+精彩刺激的故事","多元世界观，
+精彩刺激的故事",오른쪽 정렬
+s04.art.bottom,04,art,"들어가게 해줘.
+주머니속에.","Let me in.
+Into your pocket.","入れてくれよ。
+ポケットの中に。","讓我進去。
+你的口袋裡。","让我进去。
+你的口袋里。","아래 일러스트 속 파란 네온 손글씨 (1줄 크게, 2줄 작게)"
+s05.headline,05,headline,"내가 정하는
+**맞춤형** 캐릭터 성격","You decide:
+**Custom** character personalities","あなたが決める
+**オーダーメイド**のキャラ性格","由我決定的
+**客製化**角色個性","由我决定的
+**定制化**角色性格",** = 분홍 굵게
+ui.skip,05,ui,건너뛰기,Skip,スキップ,略過,跳过,
+ui.q.type,05,ui,어떤 상대가 좋아요?,Who would you like to meet?,どんな相手がいいですか？,你想遇見什麼樣的人？,你想遇见什么样的人？,[앱 UI 문구] onboarding.partnerTitle — 전 언어 수정 (원래 What's your type? / どんな相手が好き？ / 你喜歡什麼樣的對象？ / 你喜欢什么样的对象？)
+ui.q.pick,05,ui,끌리는 성격을 하나만 골라 주세요.,Pick the personality you are drawn to.,惹かれる性格をひとつ選んでください。,挑一個你心動的個性。,挑一个让你心动的性格。,[앱 UI 문구] onboarding.partnerHint — 전 언어 수정 (원래 Pick the one personality you're drawn to. / 惹かれる性格を1つだけ選んでください。 / 請選一個你最心動的個性。 / 请选一个你最心动的性格。)
+ui.p.sweet,05,ui,다정하고 순정적인,Warm and devoted,やさしく一途,溫柔又專一,温柔又专一,성격 카드 제목. [앱 UI 문구] onboarding.partnerOption.sweet.label — 전 언어 수정 (원래 Sweet & Devoted / 優しくて一途 / 溫柔又專情 / 温柔又专情)
+ui.p.sweet.sub,05,ui,한결같이 아껴 주는 사람,Someone who always treasures you,いつも大切にしてくれる人,始終珍惜你的人,始终珍惜你的人,[앱 UI 문구] onboarding.partnerOption.sweet.caption — 전 언어 수정 (원래 Always cherishes you / 変わらず大切にしてくれる人 / 始終如一珍惜你的人 / 始终如一珍惜你的人)
+ui.p.obsess,05,ui,집착과 질투,Possessive and jealous,執着と嫉妬,佔有與嫉妒,占有与嫉妒,성격 카드 제목 (선택된 카드). [앱 UI 문구] onboarding.partnerOption.obsessive.label — en·zh-Hant·zh-Hans 수정 (원래 Obsessive & Jealous / 佔有欲與嫉妒 / 占有欲与嫉妒)
+ui.p.obsess.sub,05,ui,나만 바라보는 뜨거운 사람,Someone who sees only you,自分だけを見つめる熱い人,眼裡只有你的熾熱之人,眼里只有你的炽热之人,[앱 UI 문구] onboarding.partnerOption.obsessive.caption — 전 언어 수정 (원래 Burning eyes only for you / 私だけを見つめる情熱的な人 / 眼裡只有我的熾熱之人 / 眼里只有我的炽热之人)
+ui.p.tsun,05,ui,까칠한 츤데레,Prickly but caring,そっけないツンデレ,嘴硬的傲嬌,嘴硬的傲娇,성격 카드 제목. [앱 UI 문구] onboarding.partnerOption.tsundere.label — 전 언어 수정 (원래 Prickly Tsundere / クールなツンデレ / 嘴硬傲嬌 / 嘴硬傲娇)
+ui.p.tsun.sub,05,ui,무뚝뚝한데 자꾸 챙겨 주는 사람,"Blunt, yet always looking out for you",無愛想でも何かと世話を焼く人,話很冷卻總在照顧你,话很冷却总在照顾你,"[앱 UI 문구] onboarding.partnerOption.tsundere.caption — 전 언어 수정 (원래 Blunt, but always looks out for you / ぶっきらぼうなのに世話を焼いてくれる人 / 冷淡卻總是默默照顧你的人 / 冷淡却总是默默照顾你的人)"
+ui.p.tease,05,ui,능글맞은 여유,Playful and teasing,余裕のある小悪魔,從容的撩人,从容的撩人,성격 카드 제목. [앱 UI 문구] onboarding.partnerOption.playful.label — 전 언어 수정 (원래 Smooth & Teasing / 余裕たっぷりの色男 / 從容又撩人 / 从容又撩人)
+ui.p.tease.sub,05,ui,장난스럽게 밀고 당기는 사람,Someone who keeps you guessing,からかいながら距離を縮める人,一邊逗你一邊靠近的人,一边逗你一边靠近的人,[앱 UI 문구] onboarding.partnerOption.playful.caption — 전 언어 수정 (원래 Plays a teasing push and pull / いたずらっぽく駆け引きする人 / 愛玩欲擒故縱的人 / 爱玩欲擒故纵的人)
+s06.headline,06,headline,"나만의 **스토리**
+나만의 작품","Your own **story**
+Your own creation","自分だけの**ストーリー**
+自分だけの作品","專屬我的**故事**
+專屬我的作品","专属我的**故事**
+专属我的作品",** = 굵게
+ui.tab.works,06,ui,작품,Works,作品,作品,作品,상단 탭 (선택됨)
+ui.tab.worlds,06,ui,세계관,Worlds,世界観,世界觀,世界观,상단 탭
+ui.tab.lore,06,ui,로어북,Lorebooks,ロアブック,設定集,设定集,상단 탭. [앱 UI 문구] creatorUI.hub.lorebooks — en 수정 (원래 Lorebook)
+ui.tab.widget,06,ui,위젯,Widgets,ウィジェット,小工具,小工具,상단 탭. [앱 UI 문구] creatorUI.hub.widgets — zh-Hans 수정 (원래 小组件). 앱은 zh-Hans도 小工具 사용
+ui.my_works,06,ui,내 작품,My works,自分の作品,我的作品,我的作品,[앱 UI 문구] creatorUI.hub.myWorks — en·ja 수정 (원래 My Works / マイ作品)
+ui.my_works.desc,06,ui,만든 작품을 모아 봐요. 비공개 작품은 나에게만 보여요.,See all your works. Private works are visible only to you.,作成した作品をまとめて確認できます。非公開作品は自分だけに表示されます。,查看你建立的作品。私人作品只有你看得到。,查看你创建的作品。私人作品只有你能看到。,[앱 UI 문구] creatorUI.hub.description — 전 언어 수정 (원래 All your creations in one place. Private works are visible only to you. / 作った作品をまとめて見られます。非公開の作品は自分にだけ表示されます。 / 集中查看你創作的作品。不公開的作品只有你看得到。 / 集中查看你创作的作品。私密作品仅自己可见。)
+ui.btn.new_work,06,ui,+ 새 작품 만들기,+ Create a work,＋ 新しい作品を作る,＋ 建立新作品,＋ 创建新作品,[앱 UI 문구] creatorUI.hub.newWork — 전 언어 수정 (원래 + New Work / + 新しい作品を作成 / + 建立新作品 / + 创建新作品). ja·zh의 ＋는 앱 원문대로 전각
+ui.badge.private,06,badge,비공개,Private,非公開,私人,私人,[앱 UI 문구] creatorUI.hub.visibilityPrivate — zh-Hant·zh-Hans 수정 (원래 不公開 / 私密)
+ui.badge.public,06,badge,공개,Public,公開,公開,公开,
+w.baek.title,06,ui,남사친 백시현,Guy Friend Baek Sihyun,男友達ペク・シヒョン,男閨蜜白時賢,男闺蜜白时贤,캐릭터명 포함. DB 번역 없음(비공개 작품이라 현지화 데이터가 없음) — 기존 CSV 번역 유지
+w.puma.art,06,art,"우리 사장님은
+퓨마수인?!","Our Boss Is a
+Puma Beastkin?!","うちの社長は
+ピューマの獣人？！","我們老闆是
+美洲獅獸人？！","我们社长是
+美洲狮兽人？！","작품 표지 속 굵은 글씨. [앱 DB 번역] 작품명으로 교체, 줄바꿈은 제안이라 조정 가능. ※ 실제 앱은 표지 이미지를 현지화하지 않음"
+w.puma.title,06,ui,우리 사장님은 퓨마수인 ?!,Our Boss Is a Puma Beastkin?!,うちの社長はピューマの獣人？！,我們老闆是美洲獅獸人？！,我们社长是美洲狮兽人？！,[앱 DB 번역] 작품명 (zh-Hant 老闆 / zh-Hans 社长 — DB 원문 그대로)
+ui.edit,06,ui,편집,Edit,編集,編輯,编辑,
+ui.delete,06,ui,삭제,Delete,削除,刪除,删除,
